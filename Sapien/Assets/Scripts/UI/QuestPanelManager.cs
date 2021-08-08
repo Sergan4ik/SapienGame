@@ -32,7 +32,8 @@ public class QuestPanelManager : MonoBehaviour
         bool startOfFragment = (QuestManager.instance.GetQuestForGiveCardByName(name) != null)
             , StoryQuest = (QuestManager.instance.GetStoryQuestByName(name) != null)
             , AfterStory = (QuestManager.instance.GetQuestAfterStoryQuestByName(name) != null);
-        if (quest.availible)
+        Debug.Log($"<color=red>Last active quest panel is {LastActiveQuest}</color>");
+        if (quest.availible && !QuestManager.instance.IsQuestCompleted(quest))
         {
             if (LastActiveQuest < 3)
             {
@@ -67,7 +68,7 @@ public class QuestPanelManager : MonoBehaviour
                     //QuestManager.instance.GetQuestForGiveCardByName(name).OnQuestComplete += 
                     //    () => GameObject.Find("Messages").GetComponent<MessagesManager>().DeleteQuest(name, tag);
                 }
-                LastActiveQuest++;
+                LastActiveQuest = Mathf.Min(LastActiveQuest + 1 , 3);
                 return true;
             }
             else
@@ -122,29 +123,35 @@ public class QuestPanelManager : MonoBehaviour
         switch (n)
         {
             case 0:
+                Debug.Log("OY");
+                LastActiveQuest = Mathf.Max(LastActiveQuest - 1 , 0);
                 anim[0].Play("QuestComplete");
                 anim[1].Play("QuestUp");
                 anim[2].Play("QuestUp");
                 yield return new WaitForSeconds(1f);
                 QuestIcon[0].GetComponent<QuestPanel>().ShowInfo(QuestIcon[1].GetComponent<QuestPanel>().targetQuest);
                 QuestIcon[1].GetComponent<QuestPanel>().ShowInfo(QuestIcon[2].GetComponent<QuestPanel>().targetQuest);
-                QuestIcon[2].GetComponent<QuestPanel>().targetQuest = null;
+                QuestIcon[2].GetComponent<QuestPanel>().ClearPanel();
                 //QuestDescription[0].GetComponent<Text>().text = QuestDescription[1].GetComponent<Text>().text;
                 //QuestDescription[1].GetComponent<Text>().text = QuestDescription[2].GetComponent<Text>().text;
                 //QuestPrice[0].GetComponent<Text>().text = QuestPrice[1].GetComponent<Text>().text;
                 //QuestPrice[1].GetComponent<Text>().text = QuestPrice[2].GetComponent<Text>().text;
                 break;
             case 1:
+                Debug.Log("OY");
+                LastActiveQuest = Mathf.Max(LastActiveQuest - 1 , 0);
                 anim[1].Play("QuestComplete");
                 anim[2].Play("QuestUp");
                 yield return new WaitForSeconds(1f);
                 QuestIcon[1].GetComponent<QuestPanel>().ShowInfo(QuestIcon[2].GetComponent<QuestPanel>().targetQuest);
-                QuestIcon[2].GetComponent<QuestPanel>().targetQuest = null;
+                QuestIcon[2].GetComponent<QuestPanel>().ClearPanel();
                 break;
             case 2:
+                Debug.Log("OY");
+                LastActiveQuest = Mathf.Max(LastActiveQuest - 1 , 0);
                 anim[2].Play("QuestComplete");
                 yield return new WaitForSeconds(1f);
-                QuestIcon[2].GetComponent<QuestPanel>().targetQuest = null;
+                QuestIcon[2].GetComponent<QuestPanel>().ClearPanel();
                 break;
         }
         anim[0].Play("QuestIdle");
@@ -162,7 +169,6 @@ public class QuestPanelManager : MonoBehaviour
         {
             QuestIcon[0].SetActive(false);
         }
-        LastActiveQuest--;
     }
     
     public void OnClickQuestIconDecline(string name)
@@ -180,7 +186,7 @@ public class QuestPanelManager : MonoBehaviour
         {
             n = 2;
         }
-        else { n = 10; }
+        else { n = 10; return;}
 
         StartCoroutine(OnClickQuestIconDeclineCR(n));
     }

@@ -2519,7 +2519,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3812242571227123024}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -2587,9 +2587,11 @@ MonoBehaviour:
   secondColor: {r: 0.9622642, g: 0.84058917, b: 0, a: 1}
   thirdColor: {r: 0.052918315, g: 1, b: 0, a: 1}
   friendStages:
-  - "\u0417\u043D\u0430\u043A\u043E\u043C\u044B\u0439"
-  - "\u0414\u0440\u0443\u0433"
-  - "\u0411\u0440\u0430\u0442\u0430\u043D"
+  - Unfamiliar
+  - Buddy
+  - 'Friend '
+  - 'Close friend '
+  - Best friend
   CurrentCharacterGameObject: {fileID: 1525124177292186}
 --- !u!1 &4334812947203002279
 GameObject:
